@@ -24,7 +24,11 @@ window.addEventListener('DOMContentLoaded', () => {
   start.addEventListener('click', function (e) {
     document.querySelector('#quizBlock').style.display = 'block';
     start.style.display = 'none';
+    // call the displayQuiz function
+  displayQuiz();
   });
+
+  
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
   // Basic ideas from https://code-boxx.com/simple-javascript-quiz/
@@ -44,7 +48,19 @@ window.addEventListener('DOMContentLoaded', () => {
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
     },
+    {
+      q: 'Which Planet is the hottest in the solar system?',
+      o: ['Mars', 'Saturn', 'Venus', 'Neptune'],
+      a: 2,
+    },
+    {
+      q: 'What does HTML stand for?',
+      o: ['Hypter Text Massive language', 'Hyper Tool Markup Language', 'Hyper Text Makeup Language', 'Hyper Text Markup Language'], 
+      a: 3,
+    }
   ];
+
+  
 
   // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
@@ -60,8 +76,14 @@ window.addEventListener('DOMContentLoaded', () => {
                     </ul>
                     <div>&nbsp;</div>`;
       quizWrap.innerHTML = quizDisplay;
+      countdown (2,00)
     });
   };
+
+  let submitButton = document.getElementById("btnSubmit");
+  submitButton.addEventListener('click', ()=>{
+    calculateScore();
+  });
 
   // Calculate the score
   const calculateScore = () => {
@@ -71,20 +93,52 @@ window.addEventListener('DOMContentLoaded', () => {
         //highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
         let r = `radio_${index}_${i}`;
-        liElement = document.querySelector('#' + li);
-        radioElement = document.querySelector('#' + r);
+        let liElement = document.getElementById(`${li}`);
+        radioElement = document.getElementById(`${r}`);
 
         if (quizItem.a == i) {
           //change background color of li element here
+          liElement.style.backgroundColor = 'green';
         }
 
         if (radioElement.checked) {
           // code for task 1 goes here
+          
         }
       }
     });
   };
+  
 
-  // call the displayQuiz function
-  displayQuiz();
+  
+
+//countdown function
+var timeoutHandle;
+function countdown(minutes, seconds) {
+    function tick() {
+        var counter = document.getElementById("time");
+        counter.innerHTML =
+            minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
+        seconds--;
+        if (seconds >= 0) {
+            timeoutHandle = setTimeout(tick, 1000);
+        } else {
+            if (minutes >= 1) {
+                setTimeout(function () {
+                    countdown(minutes - 1, 59);
+                }, 1000);
+            }
+        }
+    }
+    tick();
+}
+
+
+// reset button 
+  let resetButton = document.getElementById('btnReset');
+  resetButton.addEventListener('click', ()=>{
+  location.reload();
+});
+
+           
 });
